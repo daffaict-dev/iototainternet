@@ -14,9 +14,9 @@ if (!checkSessionTimeout()) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $csrf_token = $_POST['csrf_token'] ?? '';
-    $version = sanitizeInput($_POST['version'] ?? '');
-    $firmware_file = $_FILES['firmware'] ?? null;
+    $csrf_token = $_POST['csrf_token'] ? $_POST['csrf_token'] : '';
+    $version = sanitizeInput($_POST['version'] ? $_POST['version'] : '');
+    $firmware_file = $_FILES['firmware'] ? $_FILES['firmware'] : null;
     
     // Verify CSRF token
     if (!verifyCSRFToken($csrf_token)) {

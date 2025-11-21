@@ -10,9 +10,10 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 // Handle login form submission
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = sanitizeInput($_POST['username'] ?? '');
-    $password = $_POST['password'] ?? '';
-    $csrf_token = $_POST['csrf_token'] ?? '';
+    // Ganti ?? dengan isset() check untuk PHP versi lama
+    $username = isset($_POST['username']) ? sanitizeInput($_POST['username']) : '';
+    $password = isset($_POST['password']) ? $_POST['password'] : '';
+    $csrf_token = isset($_POST['csrf_token']) ? $_POST['csrf_token'] : '';
     
     // Verify CSRF token
     if (!verifyCSRFToken($csrf_token)) {
@@ -54,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             font-family: Arial, sans-serif; 
-            background: #ffffffff;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -126,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <div class="login-container">
-        <h1>Hiwing GPS OTA</h1>
+        <h1>🔐 ESP32 OTA Login</h1>
         
         <?php if ($error): ?>
             <div class="error"><?php echo $error; ?></div>
@@ -137,16 +138,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             <div class="form-group">
                 <label for="username">Username:</label>
-                <input type="text" id="username" name="username" placeholder="Input Username" required>
+                <input type="text" id="username" name="username" required>
             </div>
             
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Input Password" required>
+                <input type="password" id="password" name="password" required>
             </div>
             
             <button type="submit" class="btn">Login</button>
         </form>
+        
+        <div class="login-info">
+            <strong>Default Login:</strong><br>
+            Username: <code>admin</code><br>
+            Password: <code>admin123</code>
+        </div>
     </div>
 </body>
 </html>
