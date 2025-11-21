@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
         
         // Redirect to dashboard with success message
-        header('Location: dashboard.php?success=1');
+        header('Location: dashboard?success=1');
         exit;
         
     } catch (Exception $e) {

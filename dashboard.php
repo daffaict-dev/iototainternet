@@ -44,6 +44,7 @@ $firmwareSize = $firmwareExists ? filesize(FIRMWARE_DIR . 'esp32.bin') : 0;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HIWING GPS - OTA Update System</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <style>
         * { 
             margin: 0; 
@@ -352,7 +353,7 @@ $firmwareSize = $firmwareExists ? filesize(FIRMWARE_DIR . 'esp32.bin') : 0;
                 </ul>
             </div>
             
-            <form action="upload.php" method="POST" enctype="multipart/form-data">
+            <form action="upload" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
                 
                 <div class="form-group">

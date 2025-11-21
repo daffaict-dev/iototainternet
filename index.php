@@ -55,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ESP32 OTA Login</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -73,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             width: 100%;
             max-width: 400px;
         }
-        h1 { 
+        h2 { 
             text-align: center; 
             margin-bottom: 1.5rem;
             color: #333;
@@ -124,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <div class="login-container">
-        <h1>🔐 ESP32 OTA Login</h1>
+        <h2>HIWING GPS - OTA UPDATE</h2>
         
         <?php if ($error): ?>
             <div class="error"><?php echo $error; ?></div>
@@ -134,23 +135,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
             
             <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
+                <label for="username">Username :</label>
+                <input type="text" id="username" name="username" placeholder="Input Username" required>
             </div>
             
             <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
+                <label for="password">Password :</label>
+                <input type="password" id="password" name="password" placeholder="Input Password" required>
             </div>
             
             <button type="submit" class="btn">Login</button>
         </form>
         
-        <div class="login-info">
-            <strong>Default Login:</strong><br>
-            Username: <code>admin</code><br>
-            Password: <code>admin123</code>
-        </div>
     </div>
 </body>
 </html>
