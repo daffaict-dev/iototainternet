@@ -1,0 +1,24 @@
+# Simple .htaccess - Basic security
+
+# Prevent access to db.sqlite
+<Files "db.sqlite">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Prevent access to config.php  
+<Files "config.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Allow access to firmware files
+<Files "version.json">
+    Order allow,deny
+    Allow from all
+</Files>
+
+<Files "esp32.bin">
+    Order allow,deny
+    Allow from all
+</Files>
