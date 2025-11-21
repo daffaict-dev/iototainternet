@@ -30,13 +30,14 @@ function sanitizeInput($data) {
 
 function generateCSRFToken() {
     if (empty($_SESSION['csrf_token'])) {
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        // Fallback untuk PHP 5.6 (ganti random_bytes)
+        $_SESSION['csrf_token'] = md5(uniqid(rand(), true));
     }
     return $_SESSION['csrf_token'];
 }
 
 function verifyCSRFToken($token) {
-    return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
+    return isset($_SESSION['csrf_token']) && $_SESSION['csrf_token'] === $token;
 }
 
 function checkSessionTimeout() {
@@ -73,18 +74,18 @@ function initDatabase() {
             FOREIGN KEY (admin_id) REFERENCES admin (id)
         )");
         
-        // Create default admin (username: admin, password: admin123)
-        $passwordHash = password_hash('9874563210', PASSWORD_DEFAULT);
+        // Create default admin - gunakan md5 untuk PHP 5.6
+        $passwordHash = md5('9874563210');
         $stmt = $pdo->prepare("INSERT INTO admin (username, password_hash) VALUES (?, ?)");
         $stmt->execute(['iotmaintenance', $passwordHash]);
         
         // Create version.json file
-        $initialVersion = [
+        $initialVersion = array(
             'version' => '1.0.0',
             'build_date' => date('Y-m-d H:i:s'),
             'file_size' => 0,
             'url' => '/firmware/esp32.bin'
-        ];
+        );
         
         file_put_contents(FIRMWARE_DIR . 'version.json', json_encode($initialVersion));
     }

@@ -1,4 +1,8 @@
 <?php
+// Turn on error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once 'config.php';
 
 // Redirect jika sudah login
@@ -10,7 +14,6 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 // Handle login form submission
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Ganti ?? dengan isset() check untuk PHP versi lama
     $username = isset($_POST['username']) ? sanitizeInput($_POST['username']) : '';
     $password = isset($_POST['password']) ? $_POST['password'] : '';
     $csrf_token = isset($_POST['csrf_token']) ? $_POST['csrf_token'] : '';
@@ -23,10 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Check login attempts
         $stmt = $pdo->prepare("SELECT * FROM admin WHERE username = ?");
-        $stmt->execute([$username]);
+        $stmt->execute(array($username));
         $admin = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        if ($admin && password_verify($password, $admin['password_hash'])) {
+        // Gunakan md5 untuk PHP 5.6
+        if ($admin && md5($password) === $admin['password_hash']) {
             // Login successful
             $_SESSION['loggedin'] = true;
             $_SESSION['admin_id'] = $admin['id'];
@@ -50,12 +54,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESP32 OTA Update - Login</title>
+    <title>ESP32 OTA Login</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             font-family: Arial, sans-serif; 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f5f5f5;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -65,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background: white;
             padding: 2rem;
             border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             width: 100%;
             max-width: 400px;
         }
@@ -88,25 +92,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border: 2px solid #ddd;
             border-radius: 5px;
             font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-        input[type="text"]:focus,
-        input[type="password"]:focus {
-            outline: none;
-            border-color: #667eea;
         }
         .btn {
             width: 100%;
             padding: 0.75rem;
-            background: #667eea;
+            background: #007bff;
             color: white;
             border: none;
             border-radius: 5px;
             font-size: 1rem;
             cursor: pointer;
-            transition: background 0.3s;
         }
-        .btn:hover { background: #5a6fd8; }
+        .btn:hover { background: #0056b3; }
         .error {
             background: #fee;
             color: #c33;
